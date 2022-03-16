@@ -6,9 +6,9 @@ import time
 
 con = sqlite3.connect("record.db")
 cur = con.cursor()
-cur.executescript(open("setup.sql", "r"))
+cur.executescript(open("setup.sql", "r").read())
 
-recBefore = 15
+recBefore = 5
 recAfter = 5
 recMax = 600
 rate = 44100
@@ -39,13 +39,17 @@ def rec_thread_func():
 rec_thread = threading.Thread(target=rec_thread_func)
 rec_thread.start()
 
+
+
 while True:
     input("Start")
     startFrame = i
+    startTime = int(time.time())
     input("Stop")
     time.sleep(recAfter)
     #recStop = True
     endFrame = i
+    endTime = int(time.time())
 
     outputFile = "out.wav"
 
@@ -57,6 +61,8 @@ while True:
         print("Threading put")
     elif(startFrame < endFrame):
         startFrame = int(startFrame-(rate/1024*recBefore))
+        cur.execute("INSERT INTO audio(startT, endT, len, freq, audio) VALUES (?,?,?,?,?);", (startTime, endTime, startTime-endTime, rate, b"".join(frames[startFrame:endFrame])))
+        con.commit()
         file.writeframes(b"".join(frames[startFrame:endFrame]))
     elif(startFrame > endFrame):
         file.writeframes(b"".join(frames[startFrame-recBefore:int(rate / 1024 * recMax)]+frames[0:endFrame]))

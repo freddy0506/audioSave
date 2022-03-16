@@ -1,8 +1,8 @@
 CREATE TABLE IF NOT EXISTS audio(
-    ID INT,
-    StartTime INT,
-    EndTime INT,
-    length LONGINT,
+    ID INTEGER PRIMARY KEY,
+    startT INT,
+    endT INT,
+    len LONGINT,
     freq INT,
     audio BLOB
 );

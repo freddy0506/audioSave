@@ -1,0 +1,11 @@
+{
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "driver": "SQLite",
+            "name": "audioDB",
+            "database": "${workspaceFolder:audioSave}/record.db"
+        }
+    ],
+    "sqltools.useNodeRuntime": true
+}
