@@ -4,9 +4,13 @@ import wave
 import threading
 import time
 
+con = sqlite3.connect("record.db")
+cur = con.cursor()
+cur.executescript(open("setup.sql", "r"))
+
 recBefore = 15
 recAfter = 5
-recMax = 300
+recMax = 600
 rate = 44100
 audio = pyaudio.PyAudio()
 frames = [None]*int(rate / 1024 * recMax)
@@ -28,6 +32,10 @@ def rec_thread_func():
     stream.close()
 
 
+    
+
+
+# Setup and start recording thread
 rec_thread = threading.Thread(target=rec_thread_func)
 rec_thread.start()
 
@@ -56,3 +64,4 @@ while True:
         print("dafuq")
 
     file.close()
+
